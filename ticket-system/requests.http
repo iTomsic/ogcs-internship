@@ -1,0 +1,32 @@
+###
+GET http://localhost:8080
+
+###
+GET http://localhost:8080/api/employees
+
+###
+GET http://localhost:8080/api/employees/2
+
+###
+POST http://localhost:8080/api/employees
+Content-Type: application/json
+
+{
+  "name": "Patrik",
+  "email": "patriktomsic2@gmail.com",
+  "department": "tech",
+  "activityStatus": false
+
+}
+
+###
+POST http://localhost:8080/api/employees
+Content-Type: application/json
+
+{
+  "name": "Antonija",
+  "email": "sulaantonija@gmail.com",
+  "department": "tech",
+  "activityStatus": true
+
+}
