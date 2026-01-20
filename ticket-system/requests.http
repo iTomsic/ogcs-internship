@@ -33,3 +33,13 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:8080/api/employees/2
+
+###
+PATCH http://localhost:8080/api/employees/1
+Content-Type: application/json
+
+{
+  "name": "Antonija",
+  "department": "sales",
+  "activityStatus": true
+}
