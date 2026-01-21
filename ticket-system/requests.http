@@ -43,3 +43,70 @@ Content-Type: application/json
   "department": "sales",
   "activityStatus": true
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###
+GET http://localhost:8080/api/categories
+###
+POST http://localhost:8080/api/categories
+Content-Type: application/json
+
+{
+  "name": "Software",
+  "description": "Software related issues",
+  "activityStatus": true
+}
+###
+POST http://localhost:8080/api/categories
+Content-Type: application/json
+
+{
+  "name": "Hardware",
+  "description": "Hardware related issues",
+  "activityStatus": false
+}
+
+###
+DELETE http://localhost:8080/api/categories/1
+
+###
+PATCH http://localhost:8080/api/categories/1
+Content-Type: application/json
+
+{
+  "description": "All software related issues",
+  "activityStatus": false
+}
