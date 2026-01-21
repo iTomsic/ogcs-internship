@@ -44,39 +44,32 @@ Content-Type: application/json
   "activityStatus": true
 }
 
+###
+POST http://localhost:8080/api/ticket
+Content-Type: application/json
 
+{
+  "title": "Ticket broj 2",
+  "customerName": "Lara",
+  "customerEmail": "laralara@gmail.com",
+  "customerDescription": "Stranica ne reagira",
+  "department": "tech",
+  "priority": "high",
+  "status": "active"
+}
 
+###
+GET http://localhost:8080/api/ticket
 
+###
+DELETE http://localhost:8080/api/ticket/1
 
+###
+PATCH http://localhost:8080/api/ticket/1
+Content-Type: application/json
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+{
+  "title": "Sve isto ali drugi title"
 
 ###
 GET http://localhost:8080/api/categories
@@ -109,4 +102,5 @@ Content-Type: application/json
 {
   "description": "All software related issues",
   "activityStatus": false
+>>>>>>> ticket-system/requests.http
 }
