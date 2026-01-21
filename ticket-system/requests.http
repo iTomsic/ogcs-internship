@@ -70,6 +70,7 @@ Content-Type: application/json
 
 {
   "title": "Sve isto ali drugi title"
+}
 
 ###
 GET http://localhost:8080/api/categories
@@ -102,5 +103,5 @@ Content-Type: application/json
 {
   "description": "All software related issues",
   "activityStatus": false
->>>>>>> ticket-system/requests.http
+
 }
