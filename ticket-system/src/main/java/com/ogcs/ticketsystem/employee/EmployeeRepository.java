@@ -1,4 +1,4 @@
-package com.ogcs.ticketsystem;
+package com.ogcs.ticketsystem.employee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

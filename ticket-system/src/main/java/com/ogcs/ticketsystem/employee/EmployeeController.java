@@ -1,4 +1,4 @@
-package com.ogcs.ticketsystem;
+package com.ogcs.ticketsystem.employee;
 
 import org.springframework.web.bind.annotation.*;
 

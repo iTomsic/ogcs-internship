@@ -1,11 +1,10 @@
-package com.ogcs.ticketsystem;
+package com.ogcs.ticketsystem.employee;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.awt.*;
 import java.util.Objects;
 
 @Entity
