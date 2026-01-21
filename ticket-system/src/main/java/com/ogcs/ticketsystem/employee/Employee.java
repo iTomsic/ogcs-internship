@@ -1,10 +1,8 @@
 package com.ogcs.ticketsystem.employee;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,16 +15,31 @@ public class Employee {
     private String email;
     private String department;
     private Boolean activityStatus;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Employee() {
     }
 
-    public Employee(Integer id, String name, String email, String department, Boolean activityStatus) {
+    public Employee(Integer id, String name, String email, String department, Boolean activityStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.department = department;
         this.activityStatus = activityStatus;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now().withNano(0);
+        updatedAt = LocalDateTime.now().withNano(0);
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now().withNano(0);
     }
 
     public Integer getId() {
@@ -67,6 +80,22 @@ public class Employee {
 
     public void setActivityStatus(Boolean activityStatus) {
         this.activityStatus = activityStatus;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
