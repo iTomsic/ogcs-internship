@@ -25,8 +25,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public void addNewEmployee(@RequestBody Employee employee){
-        employeeService.insertEmployee(employee);
+    public Employee addNewEmployee(@RequestBody Employee employee){
+        return employeeService.insertEmployee(employee);
     }
 
     @DeleteMapping("{id}")
@@ -35,7 +35,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("{id}")
-    public void updateEmployeeById(@PathVariable Integer id, @RequestBody Employee employee) {
-        employeeService.updateEmployeeById(id, employee);
+    public Employee updateEmployeeById(@PathVariable Integer id, @RequestBody Employee employee) {
+        return employeeService.updateEmployeeById(id, employee);
     }
 }

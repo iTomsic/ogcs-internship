@@ -27,15 +27,15 @@ public class TicketService {
                 "Ticket with " + id + " not found"));
     }
 
-    public void insertTicket(Ticket ticket) {
-        ticketRepository.save(ticket);
+    public Ticket insertTicket(Ticket ticket) {
+        return ticketRepository.save(ticket);
     }
 
     public void deleteTicketById(Integer id) {
         ticketRepository.deleteById(id);
     }
 
-    public void updateTicketById(Integer id, Ticket updatedTicket) {
+    public Ticket updateTicketById(Integer id, Ticket updatedTicket) {
 
         Ticket existingTicket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -69,7 +69,7 @@ public class TicketService {
             existingTicket.setDepartment(updatedTicket.getDepartment());
         }
 
-        ticketRepository.save(existingTicket);
+        return ticketRepository.save(existingTicket);
 
     }
 }

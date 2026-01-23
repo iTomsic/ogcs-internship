@@ -25,8 +25,8 @@ public class TicketController {
     }
 
     @PostMapping
-    public void addNewTicket(@RequestBody Ticket ticket){
-        ticketService.insertTicket(ticket);
+    public Ticket addNewTicket(@RequestBody Ticket ticket){
+        return ticketService.insertTicket(ticket);
     }
 
     @DeleteMapping("{id}")
@@ -35,8 +35,8 @@ public class TicketController {
     }
 
     @PatchMapping("{id}")
-    public void updateTicketById(@PathVariable Integer id, @RequestBody Ticket ticket){
-        ticketService.updateTicketById(id, ticket);
+    public Ticket updateTicketById(@PathVariable Integer id, @RequestBody Ticket ticket){
+        return ticketService.updateTicketById(id, ticket);
     }
 
 

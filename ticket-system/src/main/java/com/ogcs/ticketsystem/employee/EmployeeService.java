@@ -26,15 +26,15 @@ public class EmployeeService {
                 "Employee with " + id + " not found"));
     }
 
-    public void insertEmployee(Employee employee){
-        employeeRepository.save(employee);
+    public Employee insertEmployee(Employee employee){
+        return employeeRepository.save(employee);
     }
 
     public void deleteEmployeeById(Integer id) {
         employeeRepository.deleteById(id);
     }
 
-    public void updateEmployeeById(Integer id, Employee updatedEmployee) {
+    public Employee updateEmployeeById(Integer id, Employee updatedEmployee) {
 
         Employee existingEmployee = employeeRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -56,6 +56,6 @@ public class EmployeeService {
             existingEmployee.setActivityStatus(updatedEmployee.getActivityStatus());
         }
 
-        employeeRepository.save(existingEmployee);
+        return employeeRepository.save(existingEmployee);
     }
 }

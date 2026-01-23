@@ -27,15 +27,15 @@ public class CategoryService {
                         "Category with " + id + " not found"));
     }
 
-    public void insertCategory(Category category) {
-        categoryRepository.save(category);
+    public Category insertCategory(Category category) {
+        return categoryRepository.save(category);
     }
 
     public void deleteCategoryById(Integer id) {
         categoryRepository.deleteById(id);
     }
 
-    public void updateCategoryById(Integer id, Category updatedCategory) {
+    public Category updateCategoryById(Integer id, Category updatedCategory) {
 
         Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -53,6 +53,6 @@ public class CategoryService {
             existingCategory.setActivityStatus(updatedCategory.getActivityStatus());
         }
 
-        categoryRepository.save(existingCategory);
+        return categoryRepository.save(existingCategory);
     }
 }
