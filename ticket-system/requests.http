@@ -59,13 +59,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/ticket
+GET http://localhost:8080/api/tickets
 
 ###
-DELETE http://localhost:8080/api/ticket/1
+DELETE http://localhost:8080/api/tickets/1
 
 ###
-PATCH http://localhost:8080/api/ticket/1
+PATCH http://localhost:8080/api/tickets/1
 Content-Type: application/json
 
 {
