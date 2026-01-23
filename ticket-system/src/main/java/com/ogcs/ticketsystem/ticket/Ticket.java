@@ -1,5 +1,7 @@
 package com.ogcs.ticketsystem.ticket;
 
+import com.ogcs.ticketsystem.employee.Employee;
+import com.ogcs.ticketsystem.category.Category;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -18,15 +20,21 @@ public class Ticket {
     private String priority; //ENUM later
     private String status; //ENUM later
     private String department;
-    //categoryId (FK -> categories.id)
-    //assignedEmployeeId (FK -> employees.id) NULLABLE
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_employee_id")
+    private Employee assignedEmployee;
 
     public Ticket() {
     }
 
-    public Ticket(Integer id, String title, String customerName, String customerEmail, String customerDescription, String priority, String status, String department, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Ticket(Integer id, String title, String customerName, String customerEmail, String customerDescription, String priority, String status, String department, LocalDateTime createdAt, LocalDateTime updatedAt, Category category, Employee assignedEmployee) {
         this.id = id;
         this.title = title;
         this.customerName = customerName;
@@ -37,6 +45,8 @@ public class Ticket {
         this.department = department;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.category = category;
+        this.assignedEmployee = assignedEmployee;
     }
 
     @PrePersist
@@ -128,6 +138,22 @@ public class Ticket {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Employee getAssignedEmployee() {
+        return assignedEmployee;
+    }
+
+    public void setAssignedEmployee(Employee assignedEmployee) {
+        this.assignedEmployee = assignedEmployee;
     }
 
     @Override

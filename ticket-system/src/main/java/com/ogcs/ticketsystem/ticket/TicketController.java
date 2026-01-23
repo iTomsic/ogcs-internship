@@ -25,8 +25,8 @@ public class TicketController {
     }
 
     @PostMapping
-    public Ticket addNewTicket(@RequestBody Ticket ticket){
-        return ticketService.insertTicket(ticket);
+    public Ticket addNewTicket(@RequestBody Ticket ticket, @RequestParam Integer categoryId, @RequestParam Integer assignedEmployeeId){
+        return ticketService.insertTicket(ticket, categoryId, assignedEmployeeId);
     }
 
     @DeleteMapping("{id}")

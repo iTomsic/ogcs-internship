@@ -25,8 +25,8 @@ public class CategoryController {
     }
 
     @PostMapping
-    public void addNewCategory(@RequestBody Category category) {
-        categoryService.insertCategory(category);
+    public Category addNewCategory(@RequestBody Category category) {
+        return categoryService.insertCategory(category);
     }
 
     @DeleteMapping("{id}")
@@ -35,7 +35,7 @@ public class CategoryController {
     }
 
     @PatchMapping("{id}")
-    public void updateCategoryById(@PathVariable Integer id, @RequestBody Category category) {
-        categoryService.updateCategoryById(id, category);
+    public Category updateCategoryById(@PathVariable Integer id, @RequestBody Category category) {
+        return categoryService.updateCategoryById(id, category);
     }
 }

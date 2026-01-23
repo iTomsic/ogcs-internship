@@ -1,10 +1,15 @@
 package com.ogcs.ticketsystem.ticket;
 
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import com.ogcs.ticketsystem.employee.EmployeeRepository;
+import com.ogcs.ticketsystem.category.CategoryRepository;
+
+import com.ogcs.ticketsystem.category.Category;
+import com.ogcs.ticketsystem.employee.Employee;
+
+import com.ogcs.ticketsystem.employee.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -12,10 +17,17 @@ import java.util.List;
 @Service
 public class TicketService {
 
+
     private final TicketRepository ticketRepository;
 
-    public TicketService(TicketRepository ticketRepository) {
+    private final EmployeeRepository employeeRepository;
+
+    private final CategoryRepository categoryRepository;
+
+    public TicketService(TicketRepository ticketRepository, EmployeeRepository employeeRepository, CategoryRepository categoryRepository) {
         this.ticketRepository = ticketRepository;
+        this.employeeRepository = employeeRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<Ticket> getTickets() {
@@ -27,8 +39,29 @@ public class TicketService {
                 "Ticket with " + id + " not found"));
     }
 
-    public Ticket insertTicket(Ticket ticket) {
-        return ticketRepository.save(ticket);
+    public Ticket insertTicket(Ticket ticket, Integer categoryId,
+                               Integer assignedEmployeeId) {
+
+        Ticket newTicket = new Ticket();
+        newTicket.setTitle(ticket.getTitle());
+        newTicket.setCustomerName(ticket.getCustomerName());
+        newTicket.setCustomerEmail(ticket.getCustomerEmail());
+        newTicket.setCustomerDescription(ticket.getCustomerDescription());
+        newTicket.setPriority(ticket.getPriority());
+        newTicket.setStatus(ticket.getStatus());
+        newTicket.setDepartment(ticket.getDepartment());
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found with id: " + categoryId));
+        newTicket.setCategory(category);
+
+        if (assignedEmployeeId != null) {
+            Employee employee = employeeRepository.findById(assignedEmployeeId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee not found with id: " + assignedEmployeeId));
+            newTicket.setAssignedEmployee(employee);
+        }
+
+        return ticketRepository.save(newTicket);
     }
 
     public void deleteTicketById(Integer id) {

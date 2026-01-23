@@ -1,8 +1,12 @@
 package com.ogcs.ticketsystem.category;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ogcs.ticketsystem.ticket.Ticket;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,16 +21,21 @@ public class Category {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Ticket> tickets = new ArrayList<>();
+
     public Category() {
     }
 
-    public Category(Integer id, String name, String description, Boolean activityStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Category(Integer id, String name, String description, Boolean activityStatus, LocalDateTime createdAt, LocalDateTime updatedAt, List<Ticket> tickets) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.activityStatus = activityStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.tickets = tickets;
     }
 
     @PrePersist
@@ -87,6 +96,14 @@ public class Category {
 
     public void setActivityStatus(Boolean activityStatus) {
         this.activityStatus = activityStatus;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override
