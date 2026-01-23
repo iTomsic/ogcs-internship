@@ -1,7 +1,10 @@
 package com.ogcs.ticketsystem.employee;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +22,8 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeById(Integer id){
-        return employeeRepository.findById(id).orElseThrow(() -> new IllegalStateException(id + " not found"));
+        return employeeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Employee with " + id + " not found"));
     }
 
     public void insertEmployee(Employee employee){
@@ -33,7 +37,8 @@ public class EmployeeService {
     public void updateEmployeeById(Integer id, Employee updatedEmployee) {
 
         Employee existingEmployee = employeeRepository.findById(id)
-                .orElseThrow(()-> new ResourceAccessException("Employee not found!"));
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Employee with "+ id + " not found!"));
 
         if (updatedEmployee.getName() != null) {
             existingEmployee.setName(updatedEmployee.getName());

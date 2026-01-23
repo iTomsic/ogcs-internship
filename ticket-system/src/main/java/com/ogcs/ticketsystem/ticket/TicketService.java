@@ -1,7 +1,11 @@
 package com.ogcs.ticketsystem.ticket;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +23,8 @@ public class TicketService {
     }
 
     public Ticket getTicketById(Integer id){
-        return ticketRepository.findById(id).orElseThrow(() -> new IllegalStateException(id + " not found"));
+        return ticketRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Ticket with " + id + " not found"));
     }
 
     public void insertTicket(Ticket ticket) {
@@ -33,7 +38,8 @@ public class TicketService {
     public void updateTicketById(Integer id, Ticket updatedTicket) {
 
         Ticket existingTicket = ticketRepository.findById(id)
-                .orElseThrow(() -> new ResourceAccessException("Ticket not found!"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Ticket with "+ id + " not found!"));
 
         if (updatedTicket.getTitle() != null){
             existingTicket.setTitle(updatedTicket.getTitle());

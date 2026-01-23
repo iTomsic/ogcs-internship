@@ -1,7 +1,10 @@
 package com.ogcs.ticketsystem.category;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,7 +23,8 @@ public class CategoryService {
 
     public Category getCategoryById(Integer id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Category not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Category with " + id + " not found"));
     }
 
     public void insertCategory(Category category) {
@@ -34,7 +38,8 @@ public class CategoryService {
     public void updateCategoryById(Integer id, Category updatedCategory) {
 
         Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceAccessException("Category not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Category with "+ id + " not found!"));
 
         if (updatedCategory.getName() != null) {
             existingCategory.setName(updatedCategory.getName());
