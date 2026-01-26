@@ -3,6 +3,7 @@ package com.ogcs.ticketsystem.category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ogcs.ticketsystem.ticket.Ticket;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Data
 public class Category {
 
     @Id
@@ -25,19 +27,6 @@ public class Category {
     @JsonIgnore
     private List<Ticket> tickets = new ArrayList<>();
 
-    public Category() {
-    }
-
-    public Category(Integer id, String name, String description, Boolean activityStatus, LocalDateTime createdAt, LocalDateTime updatedAt, List<Ticket> tickets) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.activityStatus = activityStatus;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.tickets = tickets;
-    }
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now().withNano(0);
@@ -49,72 +38,4 @@ public class Category {
         updatedAt = LocalDateTime.now().withNano(0);
     }
 
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getActivityStatus() {
-        return activityStatus;
-    }
-
-    public void setActivityStatus(Boolean activityStatus) {
-        this.activityStatus = activityStatus;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Category category)) return false;
-        return Objects.equals(id, category.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

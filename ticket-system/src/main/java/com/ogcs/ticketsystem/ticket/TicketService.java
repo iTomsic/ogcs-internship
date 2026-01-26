@@ -6,8 +6,6 @@ import com.ogcs.ticketsystem.category.CategoryRepository;
 import com.ogcs.ticketsystem.category.Category;
 import com.ogcs.ticketsystem.employee.Employee;
 
-import com.ogcs.ticketsystem.employee.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
