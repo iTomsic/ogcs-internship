@@ -1,5 +1,6 @@
 package com.ogcs.ticketsystem.category;
 
+import jakarta.validation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category addNewCategory(@RequestBody Category category) {
+    public Category addNewCategory(@Valid @RequestBody Category category) {
         return categoryService.insertCategory(category);
     }
 
@@ -35,7 +36,7 @@ public class CategoryController {
     }
 
     @PatchMapping("{id}")
-    public Category updateCategoryById(@PathVariable Integer id, @RequestBody Category category) {
+    public Category updateCategoryById(@PathVariable Integer id, @Valid @RequestBody Category category) {
         return categoryService.updateCategoryById(id, category);
     }
 }

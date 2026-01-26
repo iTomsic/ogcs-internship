@@ -1,5 +1,6 @@
 package com.ogcs.ticketsystem.employee;
 
+import jakarta.validation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee addNewEmployee(@RequestBody Employee employee){
+    public Employee addNewEmployee(@Valid @RequestBody Employee employee){
         return employeeService.insertEmployee(employee);
     }
 
@@ -35,7 +36,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("{id}")
-    public Employee updateEmployeeById(@PathVariable Integer id, @RequestBody Employee employee) {
+    public Employee updateEmployeeById(@PathVariable Integer id, @Valid @RequestBody Employee employee) {
         return employeeService.updateEmployeeById(id, employee);
     }
 }

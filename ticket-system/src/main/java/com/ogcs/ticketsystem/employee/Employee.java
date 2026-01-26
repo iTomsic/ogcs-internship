@@ -3,6 +3,8 @@ package com.ogcs.ticketsystem.employee;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ogcs.ticketsystem.ticket.Ticket;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,8 +19,13 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotBlank(message = "Name is mandatory")
     private String name;
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Email needs to be a valid email address")
     private String email;
+    @NotBlank(message = "Department is mandatory")
     private String department;
     private Boolean activityStatus;
     private LocalDateTime createdAt;

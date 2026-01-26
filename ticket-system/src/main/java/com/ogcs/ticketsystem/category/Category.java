@@ -3,6 +3,7 @@ package com.ogcs.ticketsystem.category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ogcs.ticketsystem.ticket.Ticket;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotBlank(message = "Name is mandatory")
     private String name;
+    @NotBlank(message = "Description is mandatory")
     private String description;
     private Boolean activityStatus;
     private LocalDateTime createdAt;
