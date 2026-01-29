@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
   "name": "Patrik",
-  "email": "patriktomsicgmail.com",
+  "email": "patriktomsic@gmail.com",
   "department": "tech",
   "activityStatus": false
 
@@ -104,4 +104,30 @@ Content-Type: application/json
   "description": "All software related issues",
   "activityStatus": false
 
+}
+
+###
+GET http://localhost:8080/api/ticket-notes
+
+###
+GET http://localhost:8080/api/ticket-notes/2
+
+###
+POST http://localhost:8080/api/ticket-notes
+Content-Type: application/json
+
+{
+  "text": "Primjer teksta 3"
+
+}
+
+###
+DELETE http://localhost:8080/api/ticket-notes/2
+
+###
+PATCH http://localhost:8080/api/ticket-notes/1
+Content-Type: application/json
+
+{
+  "text": "Promjenjen tekst"
 }
