@@ -3,11 +3,9 @@ package com.ogcs.ticketsystem.ticket;
 import com.ogcs.ticketsystem.employee.Employee;
 import com.ogcs.ticketsystem.category.Category;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Data
@@ -24,8 +22,30 @@ public class Ticket {
     private String customerEmail;
     @NotBlank(message = "Customer description is mandatory")
     private String customerDescription;
-    private String priority; //ENUM later
-    private String status; //ENUM later
+
+    public enum Priority {
+        LOW,
+        MEDIUM,
+        HIGH
+    }
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Priority is mandatory")  // CORRECT for enums
+    @Column(nullable = false)
+    private Priority priority;
+
+    public enum Status {
+        PENDING,
+        ACCEPTED,
+        REJECTED,
+        COMPLETED
+    }
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Status is mandatory")  // CORRECT for enums
+    @Column(nullable = false)
+    private Status status;
+
     private String department;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

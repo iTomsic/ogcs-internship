@@ -54,8 +54,8 @@ Content-Type: application/json
   "customerEmail": "laralara@gmail.com",
   "customerDescription": "Stranica ne reagira",
   "department": "tech",
-  "priority": "high",
-  "status": "active"
+  "priority": "HIGH",
+  "status": "PENDING"
 }
 
 ###
@@ -122,7 +122,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8080/api/ticket-notes/2
+DELETE http://localhost:8080/api/ticket-notes/3
 
 ###
 PATCH http://localhost:8080/api/ticket-notes/1
