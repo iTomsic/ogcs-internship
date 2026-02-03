@@ -26,8 +26,8 @@ public class TicketNoteController {
     }
 
     @PostMapping
-    public TicketNote addTicketNote(@Valid @RequestBody TicketNote ticketNote){
-        return ticketNoteService.insertTicketNote(ticketNote);
+    public TicketNote addTicketNote(@Valid @RequestBody TicketNote ticketNote, @RequestParam Integer employeeId, @RequestParam Integer ticketId){
+        return ticketNoteService.insertTicketNote(ticketNote, employeeId, ticketId);
     }
 
     @DeleteMapping("{id}")

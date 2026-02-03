@@ -1,11 +1,14 @@
 package com.ogcs.ticketsystem.ticket;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ogcs.ticketsystem.employee.Employee;
 import com.ogcs.ticketsystem.category.Category;
+import com.ogcs.ticketsystem.ticketnote.TicketNote;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+
 
 @Entity
 @Data
@@ -57,6 +60,10 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_employee_id")
     private Employee assignedEmployee;
+
+    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private TicketNote ticketNote;
 
     @PrePersist
     protected void onCreate() {

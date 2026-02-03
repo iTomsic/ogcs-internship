@@ -113,12 +113,11 @@ GET http://localhost:8080/api/ticket-notes
 GET http://localhost:8080/api/ticket-notes/2
 
 ###
-POST http://localhost:8080/api/ticket-notes
+POST http://localhost:8080/api/ticket-notes?employeeId=1&ticketId=1
 Content-Type: application/json
 
 {
-  "text": "Primjer teksta 3"
-
+  "text": "Tekst naseg notea koji pripada 1.employeeu na 1.ticket!"
 }
 
 ###
