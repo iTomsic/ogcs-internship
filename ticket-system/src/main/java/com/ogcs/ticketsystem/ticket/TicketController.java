@@ -40,5 +40,9 @@ public class TicketController {
         return ticketService.updateTicketById(id, ticket);
     }
 
+    @GetMapping(params = "status")
+    public List<Ticket> getTicketsByStatus(@RequestParam Ticket.Status status){
+        return ticketService.getTicketsByStatus(status);
+    }
 
 }

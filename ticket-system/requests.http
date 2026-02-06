@@ -65,7 +65,7 @@ Content-Type: application/json
   "customerDescription": "Stranica ne reagira",
   "department": "tech",
   "priority": "HIGH",
-  "status": "PENDING"
+  "status": "COMPLETED"
 }
 
 ###
@@ -81,6 +81,9 @@ Content-Type: application/json
 {
   "title": "Sve isto ali drugi title"
 }
+
+###
+GET http://localhost:8080/api/tickets?status=COMPLETED
 
 ###
 GET http://localhost:8080/api/categories

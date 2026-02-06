@@ -103,4 +103,8 @@ public class TicketService {
         return ticketRepository.save(existingTicket);
 
     }
+
+    public List<Ticket> getTicketsByStatus(Ticket.Status status){
+        return ticketRepository.findByStatus(status);
+    }
 }
