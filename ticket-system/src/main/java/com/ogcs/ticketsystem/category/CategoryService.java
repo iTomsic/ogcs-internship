@@ -53,4 +53,27 @@ public class CategoryService {
 
         return categoryRepository.save(existingCategory);
     }
+
+    public Category deactivateCategoryById(Integer id) {
+
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Category with "+ id + " not found!"));
+
+        category.setActivityStatus(false);
+
+        return categoryRepository.save(category);
+    }
+
+    public Category activateCategoryById(Integer id) {
+
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Category with "+ id + " not found!"));
+
+        category.setActivityStatus(true);
+
+        return categoryRepository.save(category);
+    }
+
 }

@@ -39,4 +39,14 @@ public class CategoryController {
     public Category updateCategoryById(@PathVariable Integer id, @Valid @RequestBody Category category) {
         return categoryService.updateCategoryById(id, category);
     }
+
+    @PatchMapping("{id}/deactivate")
+    public Category deactivateCategoryById(@PathVariable Integer id){
+        return categoryService.deactivateCategoryById(id);
+    }
+
+    @PatchMapping("{id}/activate")
+    public Category activateCategoryById(@PathVariable Integer id){
+        return categoryService.activateCategoryById(id);
+    }
 }
