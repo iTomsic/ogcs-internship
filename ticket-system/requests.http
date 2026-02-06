@@ -5,7 +5,7 @@ GET http://localhost:8080
 GET http://localhost:8080/api/employees
 
 ###
-GET http://localhost:8080/api/employees/2
+GET http://localhost:8080/api/employees/1
 
 ###
 POST http://localhost:8080/api/employees
@@ -15,7 +15,7 @@ Content-Type: application/json
   "name": "Patrik",
   "email": "patriktomsic@gmail.com",
   "department": "tech",
-  "activityStatus": false
+  "activityStatus": true
 
 }
 
@@ -42,6 +42,22 @@ Content-Type: application/json
   "name": "Antonija",
   "department": "sales",
   "activityStatus": true
+}
+
+###
+PATCH http://localhost:8080/api/employees/1/activate
+Content-Type: application/json
+
+{
+
+}
+
+###
+PATCH http://localhost:8080/api/employees/1/deactivate
+Content-Type: application/json
+
+{
+
 }
 
 ###

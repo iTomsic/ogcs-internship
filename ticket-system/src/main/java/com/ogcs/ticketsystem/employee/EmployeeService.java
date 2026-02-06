@@ -56,4 +56,29 @@ public class EmployeeService {
 
         return employeeRepository.save(existingEmployee);
     }
+
+    public Employee deactivateEmployeeById(Integer id){
+
+        Employee employee = employeeRepository.findById(id).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Employee with " + id + " not found"));
+
+        employee.setActivityStatus(false);
+
+        return employeeRepository.save(employee);
+
+    }
+
+    public Employee activateEmployeeById(Integer id){
+
+        Employee employee = employeeRepository.findById(id).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Employee with " + id + " not found"));
+
+        employee.setActivityStatus(true);
+
+        return employeeRepository.save(employee);
+
+    }
+
 }

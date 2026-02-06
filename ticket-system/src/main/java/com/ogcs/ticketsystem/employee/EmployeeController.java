@@ -39,4 +39,14 @@ public class EmployeeController {
     public Employee updateEmployeeById(@PathVariable Integer id, @Valid @RequestBody Employee employee) {
         return employeeService.updateEmployeeById(id, employee);
     }
+
+    @PatchMapping("{id}/deactivate")
+    public Employee deactivateEmployeeById(@PathVariable Integer id) {
+        return employeeService.deactivateEmployeeById(id);
+    }
+
+    @PatchMapping("{id}/activate")
+    public Employee activateEmployeeById(@PathVariable Integer id) {
+        return employeeService.activateEmployeeById(id);
+    }
 }
