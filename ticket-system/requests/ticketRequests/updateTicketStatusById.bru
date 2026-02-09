@@ -1,0 +1,20 @@
+meta {
+  name: updateTicketStatusById
+  type: http
+  seq: 8
+}
+
+patch {
+  url: http://localhost:8080/api/tickets/1/status?newStatus=ACCEPTED
+  body: none
+  auth: inherit
+}
+
+params:query {
+  newStatus: ACCEPTED
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

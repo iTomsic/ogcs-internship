@@ -6,13 +6,25 @@ meta {
 
 post {
   url: POST http://localhost:8080/api/tickets?categoryId=1&assignedEmployeeId=1
-  body: none
+  body: json
   auth: inherit
 }
 
 params:query {
   categoryId: 1
   assignedEmployeeId: 1
+}
+
+body:json {
+  {
+    "title": "Ticket broj 1",
+    "customerName": "Lara",
+    "customerEmail": "laralara@gmail.com",
+    "customerDescription": "Stranica ne reagira",
+    "department": "tech",
+    "priority": "HIGH",
+    "status": "PENDING"
+  }
 }
 
 settings {

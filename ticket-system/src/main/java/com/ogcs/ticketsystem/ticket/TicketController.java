@@ -50,4 +50,9 @@ public class TicketController {
         return ticketService.completeTicketById(id);
     }
 
+    @PatchMapping("{id}/status")
+    public Ticket updateTicketStatusById(@Valid @PathVariable Integer id, @RequestParam Ticket.Status newStatus){
+        return ticketService.updateTicketStatusById(id, newStatus);
+    }
+
 }

@@ -125,4 +125,20 @@ public class TicketService {
 
         return ticketRepository.save(existingTicket);
     }
+
+    public Ticket updateTicketStatusById(Integer id, Ticket.Status newStatus){
+
+        Ticket existingTicket = ticketRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Ticket with "+ id + " not found!"));
+
+        if(existingTicket.getStatus() == Ticket.Status.COMPLETED){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ticket with " + id + " is completed and cannot update!");
+        }
+
+        existingTicket.setStatus(newStatus);
+
+        return ticketRepository.save(existingTicket);
+    }
 }
