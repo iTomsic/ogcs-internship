@@ -1,0 +1,15 @@
+meta {
+  name: completeTicketById
+  type: http
+  seq: 7
+}
+
+patch {
+  url: http://localhost:8080/api/tickets/1/complete
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

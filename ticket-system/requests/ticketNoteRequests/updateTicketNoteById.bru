@@ -1,0 +1,22 @@
+meta {
+  name: updateTicketNoteById
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/api/ticket-notes/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "text": "Promjenjen tekst"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

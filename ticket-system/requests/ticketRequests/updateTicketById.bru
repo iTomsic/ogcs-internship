@@ -1,0 +1,22 @@
+meta {
+  name: updateTicketById
+  type: http
+  seq: 6
+}
+
+patch {
+  url: http://localhost:8080/api/tickets/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Sve isto ali drugi title"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

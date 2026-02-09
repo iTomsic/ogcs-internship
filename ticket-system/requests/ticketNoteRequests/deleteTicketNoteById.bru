@@ -1,0 +1,15 @@
+meta {
+  name: deleteTicketNoteById
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://localhost:8080/api/ticket-notes/1
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

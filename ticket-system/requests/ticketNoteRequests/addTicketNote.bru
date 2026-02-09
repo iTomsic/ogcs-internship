@@ -1,0 +1,27 @@
+meta {
+  name: addTicketNote
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/ticket-notes?employeeId=1&ticketId=1
+  body: json
+  auth: inherit
+}
+
+params:query {
+  employeeId: 1
+  ticketId: 1
+}
+
+body:json {
+  {
+    "text": "Tekst naseg notea koji pripada 1.employeeu na 1.ticket!"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
