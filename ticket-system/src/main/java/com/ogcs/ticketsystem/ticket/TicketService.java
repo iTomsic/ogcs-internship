@@ -46,11 +46,13 @@ public class TicketService {
         newTicket.setCustomerEmail(ticket.getCustomerEmail());
         newTicket.setCustomerDescription(ticket.getCustomerDescription());
         newTicket.setPriority(ticket.getPriority());
-        newTicket.setStatus(ticket.getStatus());
+
+        newTicket.setStatus(Ticket.Status.PENDING);
+
         newTicket.setDepartment(ticket.getDepartment());
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found with id: " + categoryId));
+        Category category = categoryRepository.findByIdAndActivityStatusTrue(categoryId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category inactive or not found with id: " + categoryId));
         newTicket.setCategory(category);
 
         if (assignedEmployeeId != null) {
