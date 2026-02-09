@@ -45,8 +45,8 @@ public class TicketService {
         newTicket.setCustomerName(ticket.getCustomerName());
         newTicket.setCustomerEmail(ticket.getCustomerEmail());
         newTicket.setCustomerDescription(ticket.getCustomerDescription());
-        newTicket.setPriority(ticket.getPriority());
 
+        newTicket.setPriority(Ticket.Priority.LOW);
         newTicket.setStatus(Ticket.Status.PENDING);
 
         newTicket.setDepartment(ticket.getDepartment());
@@ -56,8 +56,8 @@ public class TicketService {
         newTicket.setCategory(category);
 
         if (assignedEmployeeId != null) {
-            Employee employee = employeeRepository.findById(assignedEmployeeId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee not found with id: " + assignedEmployeeId));
+            Employee employee = employeeRepository.findByIdAndActivityStatusTrue(assignedEmployeeId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee inactive or not found with id: " + assignedEmployeeId));
             newTicket.setAssignedEmployee(employee);
         }
 
