@@ -1,17 +1,17 @@
 meta {
-  name: assignTicketToEmployee
+  name: reassignTicketToEmployee
   type: http
   seq: 9
 }
 
 patch {
-  url: http://localhost:8080/api/tickets/1/assign?assignedEmployeeId=3
+  url: http://localhost:8080/api/tickets/1/reassign?assignedEmployeeId=1
   body: none
   auth: inherit
 }
 
 params:query {
-  assignedEmployeeId: 3
+  assignedEmployeeId: 1
 }
 
 settings {

@@ -46,18 +46,18 @@ public class TicketController {
     }
 
     @PatchMapping("{id}/complete")
-    public Ticket completeTicketById(@Valid @PathVariable Integer id){
-        return ticketService.completeTicketById(id);
+    public Ticket completeTicketById(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId){
+        return ticketService.completeTicketById(id, assignedEmployeeId);
     }
 
     @PatchMapping("{id}/status")
-    public Ticket updateTicketStatusById(@Valid @PathVariable Integer id, @RequestParam Ticket.Status newStatus){
-        return ticketService.updateTicketStatusById(id, newStatus);
+    public Ticket updateTicketStatusById(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId, @RequestParam Ticket.Status newStatus){
+        return ticketService.updateTicketStatusById(id, assignedEmployeeId, newStatus);
     }
 
-    @PatchMapping("{id}/assign")
-    public Ticket assignTicketToEmployee(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId){
-        return ticketService.assignTicketToEmployee(id, assignedEmployeeId);
+    @PatchMapping("{id}/reassign")
+    public Ticket reassignTicketToEmployee(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId){
+        return ticketService.reassignTicketToEmployee(id, assignedEmployeeId);
     }
 
 }

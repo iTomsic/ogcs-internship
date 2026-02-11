@@ -5,13 +5,14 @@ meta {
 }
 
 patch {
-  url: http://localhost:8080/api/tickets/1/status?newStatus=ACCEPTED
+  url: http://localhost:8080/api/tickets/1/status?assignedEmployeeId=2&newStatus=REJECTED
   body: none
   auth: inherit
 }
 
 params:query {
-  newStatus: ACCEPTED
+  assignedEmployeeId: 2
+  newStatus: REJECTED
 }
 
 settings {

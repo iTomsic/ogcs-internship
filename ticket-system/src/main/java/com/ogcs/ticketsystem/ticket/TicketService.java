@@ -59,14 +59,7 @@ public class TicketService {
             Employee employee = employeeRepository.findByIdAndActivityStatusTrue(assignedEmployeeId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee inactive or not found with id: " + assignedEmployeeId));
 
-            if (!employee.getDepartment().equalsIgnoreCase(newTicket.getDepartment())) {
-                throw new ResponseStatusException(
-                        HttpStatus.CONFLICT,
-                        "Ticket department (" + newTicket.getDepartment() +
-                                ") does not match employee department (" + employee.getDepartment() + ")"
-                );
-            }
-
+            validateDepartmentMatch(newTicket.getDepartment(), employee);
             newTicket.setAssignedEmployee(employee);
         }
 
@@ -96,7 +89,7 @@ public class TicketService {
             existingTicket.setCustomerName(updatedTicket.getCustomerName());
         }
 
-        if (updatedTicket.getCustomerEmail() != null){
+        if (updatedTicket.getCustomerEmail() != null) {
             existingTicket.setCustomerEmail(updatedTicket.getCustomerEmail());
         }
 
@@ -124,18 +117,7 @@ public class TicketService {
         return ticketRepository.findByStatus(status);
     }
 
-    public Ticket completeTicketById(Integer id){
-
-        Ticket existingTicket = ticketRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Ticket with "+ id + " not found!"));
-
-        existingTicket.setStatus(Ticket.Status.COMPLETED);
-
-        return ticketRepository.save(existingTicket);
-    }
-
-    public Ticket updateTicketStatusById(Integer id, Ticket.Status newStatus){
+    public Ticket completeTicketById(Integer id, Integer assignedEmployeeId){
 
         Ticket existingTicket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -146,12 +128,30 @@ public class TicketService {
                     "Ticket with " + id + " is completed and cannot update!");
         }
 
+        validateAssignedEmployee(assignedEmployeeId, existingTicket);
+        existingTicket.setStatus(Ticket.Status.COMPLETED);
+
+        return ticketRepository.save(existingTicket);
+    }
+
+    public Ticket updateTicketStatusById(Integer id, Integer assignedEmployeeId, Ticket.Status newStatus){
+
+        Ticket existingTicket = ticketRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Ticket with "+ id + " not found!"));
+
+        if(existingTicket.getStatus() == Ticket.Status.COMPLETED){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ticket with " + id + " is completed and cannot update!");
+        }
+
+        validateAssignedEmployee(assignedEmployeeId, existingTicket);
         existingTicket.setStatus(newStatus);
 
         return ticketRepository.save(existingTicket);
     }
 
-    public Ticket assignTicketToEmployee(Integer id, Integer assignedEmployeeId) {
+    public Ticket reassignTicketToEmployee(Integer id, Integer assignedEmployeeId) {
 
         Ticket existingTicket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -172,18 +172,38 @@ public class TicketService {
                         "Active employee not found with id: " + assignedEmployeeId
                 ));
 
-        if (!employee.getDepartment().equalsIgnoreCase(existingTicket.getDepartment())) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "Ticket department (" + existingTicket.getDepartment() +
-                            ") does not match employee department (" +
-                            employee.getDepartment() + ")"
-            );
-        }
-
+        validateDepartmentMatch(existingTicket.getDepartment(), employee);
         existingTicket.setAssignedEmployee(employee);
 
         return ticketRepository.save(existingTicket);
     }
+
+    private void validateAssignedEmployee(Integer assignedEmployeeId, Ticket ticket) {
+
+        if (ticket.getAssignedEmployee() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ticket is not assigned to any employee!"
+            );
+        }
+
+        if (!ticket.getAssignedEmployee().getId().equals(assignedEmployeeId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "Only the assigned employee can complete this ticket!"
+            );
+        }
+    }
+
+    private void validateDepartmentMatch(String ticketDepartment, Employee employee) {
+
+        if (!employee.getDepartment().equalsIgnoreCase(ticketDepartment)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ticket and Employee departments must match!"
+            );
+        }
+    }
+
 
 }
