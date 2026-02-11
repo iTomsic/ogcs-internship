@@ -58,6 +58,15 @@ public class TicketService {
         if (assignedEmployeeId != null) {
             Employee employee = employeeRepository.findByIdAndActivityStatusTrue(assignedEmployeeId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee inactive or not found with id: " + assignedEmployeeId));
+
+            if (!employee.getDepartment().equalsIgnoreCase(newTicket.getDepartment())) {
+                throw new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "Ticket department (" + newTicket.getDepartment() +
+                                ") does not match employee department (" + employee.getDepartment() + ")"
+                );
+            }
+
             newTicket.setAssignedEmployee(employee);
         }
 
@@ -141,4 +150,40 @@ public class TicketService {
 
         return ticketRepository.save(existingTicket);
     }
+
+    public Ticket assignTicketToEmployee(Integer id, Integer assignedEmployeeId) {
+
+        Ticket existingTicket = ticketRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Ticket with " + id + " not found!"
+                ));
+
+        if (existingTicket.getStatus() == Ticket.Status.COMPLETED) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Completed ticket cannot be assigned!"
+            );
+        }
+
+        Employee employee = employeeRepository.findByIdAndActivityStatusTrue(assignedEmployeeId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Active employee not found with id: " + assignedEmployeeId
+                ));
+
+        if (!employee.getDepartment().equalsIgnoreCase(existingTicket.getDepartment())) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ticket department (" + existingTicket.getDepartment() +
+                            ") does not match employee department (" +
+                            employee.getDepartment() + ")"
+            );
+        }
+
+        existingTicket.setAssignedEmployee(employee);
+
+        return ticketRepository.save(existingTicket);
+    }
+
 }

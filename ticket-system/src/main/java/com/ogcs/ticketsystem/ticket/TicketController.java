@@ -55,4 +55,9 @@ public class TicketController {
         return ticketService.updateTicketStatusById(id, newStatus);
     }
 
+    @PatchMapping("{id}/assign")
+    public Ticket assignTicketToEmployee(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId){
+        return ticketService.assignTicketToEmployee(id, assignedEmployeeId);
+    }
+
 }
