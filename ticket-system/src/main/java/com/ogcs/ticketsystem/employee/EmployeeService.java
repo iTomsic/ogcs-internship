@@ -1,27 +1,38 @@
 package com.ogcs.ticketsystem.employee;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.constant.ModuleDesc;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final ModelMapper modelMapper;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
         this.employeeRepository = employeeRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public List<Employee> getEmployees(){
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getEmployees(){
+        return employeeRepository.findAll()
+                .stream()
+                .map(employee -> modelMapper.map(employee, EmployeeDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public Employee getEmployeeById(Integer id){
-        return employeeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+    public EmployeeDTO getEmployeeById(Integer id){
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "Employee with " + id + " not found"));
+        EmployeeDTO employeeDto = modelMapper.map(employee, EmployeeDTO.class);
+
+        return employeeDto;
     }
 
     public Employee insertEmployee(Employee employee){

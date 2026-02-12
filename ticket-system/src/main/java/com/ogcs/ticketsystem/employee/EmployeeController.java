@@ -1,6 +1,8 @@
 package com.ogcs.ticketsystem.employee;
 
 import jakarta.validation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,13 +18,15 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getEmployees(){
-        return employeeService.getEmployees();
+    public ResponseEntity<List<EmployeeDTO>> getEmployees() {
+        List<EmployeeDTO> employees = employeeService.getEmployees();
+        return new ResponseEntity<List<EmployeeDTO>>(employees, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public Employee getEmployeeById(@PathVariable Integer id){
-        return employeeService.getEmployeeById(id);
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Integer id){
+        EmployeeDTO employeeDTO = employeeService.getEmployeeById(id);
+        return new ResponseEntity<EmployeeDTO>(employeeDTO, HttpStatus.OK);
     }
 
     @PostMapping
