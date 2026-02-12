@@ -1,6 +1,8 @@
 package com.ogcs.ticketsystem.ticket;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,18 +18,21 @@ public class TicketController {
     }
 
     @GetMapping
-    public List<Ticket> getTickets(){
-        return ticketService.getTickets();
+    public ResponseEntity<List<TicketDTO>> getTickets(){
+        List<TicketDTO> tickets = ticketService.getTickets();
+        return new ResponseEntity<List<TicketDTO>>(tickets, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public Ticket getTicketById(@PathVariable Integer id){
-        return ticketService.getTicketById(id);
+    public ResponseEntity<TicketDTO> getTicketById(@PathVariable Integer id){
+        TicketDTO ticketDTO = ticketService.getTicketById(id);
+        return new ResponseEntity<TicketDTO>(ticketDTO, HttpStatus.OK);
     }
 
     @PostMapping
-    public Ticket addNewTicket(@Valid @RequestBody Ticket ticket, @RequestParam Integer categoryId, @RequestParam(required = false) Integer assignedEmployeeId){
-        return ticketService.insertTicket(ticket, categoryId, assignedEmployeeId);
+    public ResponseEntity<TicketDTO> addNewTicket(@Valid @RequestBody Ticket ticket, @RequestParam Integer categoryId, @RequestParam(required = false) Integer assignedEmployeeId){
+        TicketDTO savedTicket = ticketService.insertTicket(ticket, categoryId, assignedEmployeeId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTicket);
     }
 
     @DeleteMapping("{id}")
@@ -36,8 +41,9 @@ public class TicketController {
     }
 
     @PatchMapping("{id}")
-    public Ticket updateTicketById(@Valid @PathVariable Integer id, @RequestBody Ticket ticket){
-        return ticketService.updateTicketById(id, ticket);
+    public ResponseEntity<TicketDTO> updateTicketById(@Valid @PathVariable Integer id, @RequestBody Ticket ticket){
+        TicketDTO savedTicket = ticketService.updateTicketById(id, ticket);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTicket);
     }
 
     @GetMapping(params = "status")
@@ -46,18 +52,21 @@ public class TicketController {
     }
 
     @PatchMapping("{id}/complete")
-    public Ticket completeTicketById(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId){
-        return ticketService.completeTicketById(id, assignedEmployeeId);
+    public ResponseEntity<TicketDTO> completeTicketById(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId){
+        TicketDTO completedTicket = ticketService.completeTicketById(id, assignedEmployeeId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(completedTicket);
     }
 
     @PatchMapping("{id}/status")
-    public Ticket updateTicketStatusById(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId, @RequestParam Ticket.Status newStatus){
-        return ticketService.updateTicketStatusById(id, assignedEmployeeId, newStatus);
+    public ResponseEntity<TicketDTO> updateTicketStatusById(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId, @RequestParam Ticket.Status newStatus){
+        TicketDTO savedTicket = ticketService.updateTicketStatusById(id, assignedEmployeeId, newStatus);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTicket);
     }
 
     @PatchMapping("{id}/reassign")
-    public Ticket reassignTicketToEmployee(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId){
-        return ticketService.reassignTicketToEmployee(id, assignedEmployeeId);
+    public ResponseEntity<TicketDTO> reassignTicketToEmployee(@Valid @PathVariable Integer id, @RequestParam Integer assignedEmployeeId){
+        TicketDTO reassingedTicket = ticketService.reassignTicketToEmployee(id, assignedEmployeeId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(reassingedTicket);
     }
 
 }

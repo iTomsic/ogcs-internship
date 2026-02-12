@@ -1,43 +1,48 @@
 package com.ogcs.ticketsystem.ticket;
 
-import com.ogcs.ticketsystem.employee.EmployeeRepository;
-import com.ogcs.ticketsystem.category.CategoryRepository;
-
 import com.ogcs.ticketsystem.category.Category;
 import com.ogcs.ticketsystem.employee.Employee;
-
+import com.ogcs.ticketsystem.employee.EmployeeRepository;
+import com.ogcs.ticketsystem.category.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketService {
 
 
     private final TicketRepository ticketRepository;
-
     private final EmployeeRepository employeeRepository;
-
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
 
-    public TicketService(TicketRepository ticketRepository, EmployeeRepository employeeRepository, CategoryRepository categoryRepository) {
+    public TicketService(TicketRepository ticketRepository, EmployeeRepository employeeRepository, CategoryRepository categoryRepository, ModelMapper modelMapper) {
         this.ticketRepository = ticketRepository;
         this.employeeRepository = employeeRepository;
         this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public List<Ticket> getTickets() {
-        return ticketRepository.findAll();
+    public List<TicketDTO> getTickets() {
+        return ticketRepository.findAll()
+                .stream()
+                .map(ticket -> modelMapper.map(ticket, TicketDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public Ticket getTicketById(Integer id){
-        return ticketRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Ticket with " + id + " not found"));
+    public TicketDTO getTicketById(Integer id){
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Ticket with " + id + " not found"));
+        return modelMapper.map(ticket, TicketDTO.class);
     }
 
-    public Ticket insertTicket(Ticket ticket, Integer categoryId,
+    public TicketDTO insertTicket(Ticket ticket, Integer categoryId,
                                Integer assignedEmployeeId) {
 
         Ticket newTicket = new Ticket();
@@ -63,14 +68,15 @@ public class TicketService {
             newTicket.setAssignedEmployee(employee);
         }
 
-        return ticketRepository.save(newTicket);
+        Ticket savedTicket = ticketRepository.save(newTicket);
+        return modelMapper.map(savedTicket, TicketDTO.class);
     }
 
     public void deleteTicketById(Integer id) {
         ticketRepository.deleteById(id);
     }
 
-    public Ticket updateTicketById(Integer id, Ticket updatedTicket) {
+    public TicketDTO updateTicketById(Integer id, Ticket updatedTicket) {
 
         Ticket existingTicket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -109,7 +115,8 @@ public class TicketService {
             existingTicket.setDepartment(updatedTicket.getDepartment());
         }
 
-        return ticketRepository.save(existingTicket);
+        Ticket savedTicket = ticketRepository.save(updatedTicket);
+        return modelMapper.map(savedTicket, TicketDTO.class);
 
     }
 
@@ -117,7 +124,7 @@ public class TicketService {
         return ticketRepository.findByStatus(status);
     }
 
-    public Ticket completeTicketById(Integer id, Integer assignedEmployeeId){
+    public TicketDTO completeTicketById(Integer id, Integer assignedEmployeeId){
 
         Ticket existingTicket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -131,10 +138,11 @@ public class TicketService {
         validateAssignedEmployee(assignedEmployeeId, existingTicket);
         existingTicket.setStatus(Ticket.Status.COMPLETED);
 
-        return ticketRepository.save(existingTicket);
+        Ticket savedTicket = ticketRepository.save(existingTicket);
+        return modelMapper.map(savedTicket, TicketDTO.class);
     }
 
-    public Ticket updateTicketStatusById(Integer id, Integer assignedEmployeeId, Ticket.Status newStatus){
+    public TicketDTO updateTicketStatusById(Integer id, Integer assignedEmployeeId, Ticket.Status newStatus){
 
         Ticket existingTicket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -148,10 +156,11 @@ public class TicketService {
         validateAssignedEmployee(assignedEmployeeId, existingTicket);
         existingTicket.setStatus(newStatus);
 
-        return ticketRepository.save(existingTicket);
+        Ticket savedTicket = ticketRepository.save(existingTicket);
+        return modelMapper.map(savedTicket, TicketDTO.class);
     }
 
-    public Ticket reassignTicketToEmployee(Integer id, Integer assignedEmployeeId) {
+    public TicketDTO reassignTicketToEmployee(Integer id, Integer assignedEmployeeId) {
 
         Ticket existingTicket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -175,7 +184,8 @@ public class TicketService {
         validateDepartmentMatch(existingTicket.getDepartment(), employee);
         existingTicket.setAssignedEmployee(employee);
 
-        return ticketRepository.save(existingTicket);
+        Ticket savedTicket = ticketRepository.save(existingTicket);
+        return modelMapper.map(savedTicket, TicketDTO.class);
     }
 
     private void validateAssignedEmployee(Integer assignedEmployeeId, Ticket ticket) {
