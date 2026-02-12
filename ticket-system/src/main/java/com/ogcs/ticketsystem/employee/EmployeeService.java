@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.constant.ModuleDesc;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,20 +29,21 @@ public class EmployeeService {
     public EmployeeDTO getEmployeeById(Integer id){
         Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "Employee with " + id + " not found"));
-        EmployeeDTO employeeDto = modelMapper.map(employee, EmployeeDTO.class);
 
-        return employeeDto;
+        return modelMapper.map(employee, EmployeeDTO.class);
     }
 
-    public Employee insertEmployee(Employee employee){
-        return employeeRepository.save(employee);
+    public EmployeeDTO insertEmployee(Employee employee){
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        return modelMapper.map(savedEmployee, EmployeeDTO.class);
     }
 
     public void deleteEmployeeById(Integer id) {
         employeeRepository.deleteById(id);
     }
 
-    public Employee updateEmployeeById(Integer id, Employee updatedEmployee) {
+    public EmployeeDTO updateEmployeeById(Integer id, Employee updatedEmployee) {
 
         Employee existingEmployee = employeeRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -65,31 +65,35 @@ public class EmployeeService {
             existingEmployee.setActivityStatus(updatedEmployee.getActivityStatus());
         }
 
-        return employeeRepository.save(existingEmployee);
+        Employee savedEmployee = employeeRepository.save(existingEmployee);
+
+        return modelMapper.map(savedEmployee, EmployeeDTO.class);
     }
 
-    public Employee deactivateEmployeeById(Integer id){
+    public EmployeeDTO deactivateEmployeeById(Integer id){
 
-        Employee employee = employeeRepository.findById(id).
+        Employee existingEmployee = employeeRepository.findById(id).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Employee with " + id + " not found"));
 
-        employee.setActivityStatus(false);
+        existingEmployee.setActivityStatus(false);
 
-        return employeeRepository.save(employee);
-
+        Employee deactivatedEmployee = employeeRepository.save(existingEmployee);
+        System.out.println("Employee with id: " + id + " deactivated");
+        return modelMapper.map(deactivatedEmployee, EmployeeDTO.class);
     }
 
-    public Employee activateEmployeeById(Integer id){
+    public EmployeeDTO activateEmployeeById(Integer id){
 
-        Employee employee = employeeRepository.findById(id).
+        Employee existingEmployee = employeeRepository.findById(id).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Employee with " + id + " not found"));
 
-        employee.setActivityStatus(true);
+        existingEmployee.setActivityStatus(true);
 
-        return employeeRepository.save(employee);
-
+        Employee activatedEmployee = employeeRepository.save(existingEmployee);
+        System.out.println("Employee with id: " + id + " activated");
+        return modelMapper.map(activatedEmployee, EmployeeDTO.class);
     }
 
 }

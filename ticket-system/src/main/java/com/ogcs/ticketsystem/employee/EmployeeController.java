@@ -30,8 +30,9 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee addNewEmployee(@Valid @RequestBody Employee employee){
-        return employeeService.insertEmployee(employee);
+    public ResponseEntity<EmployeeDTO> addNewEmployee(@Valid @RequestBody Employee employee){
+        EmployeeDTO savedEmployee = employeeService.insertEmployee(employee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
     }
 
     @DeleteMapping("{id}")
@@ -40,17 +41,20 @@ public class EmployeeController {
     }
 
     @PatchMapping("{id}")
-    public Employee updateEmployeeById(@PathVariable Integer id, @Valid @RequestBody Employee employee) {
-        return employeeService.updateEmployeeById(id, employee);
+    public ResponseEntity<EmployeeDTO> updateEmployeeById(@PathVariable Integer id, @RequestBody Employee employee) {
+        EmployeeDTO savedEmployee = employeeService.updateEmployeeById(id, employee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
     }
 
     @PatchMapping("{id}/deactivate")
-    public Employee deactivateEmployeeById(@PathVariable Integer id) {
-        return employeeService.deactivateEmployeeById(id);
+    public ResponseEntity<EmployeeDTO> deactivateEmployeeById(@PathVariable Integer id) {
+        EmployeeDTO deactivatedEmployee = employeeService.deactivateEmployeeById(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(deactivatedEmployee);
     }
 
     @PatchMapping("{id}/activate")
-    public Employee activateEmployeeById(@PathVariable Integer id) {
-        return employeeService.activateEmployeeById(id);
+    public ResponseEntity<EmployeeDTO> activateEmployeeById(@PathVariable Integer id) {
+        EmployeeDTO activatedEmployee = employeeService.activateEmployeeById(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(activatedEmployee);
     }
 }
