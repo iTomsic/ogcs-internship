@@ -1,39 +1,50 @@
 package com.ogcs.ticketsystem.category;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, ModelMapper modelMapper) {
         this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public List<Category> getCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryDTO> getCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(category -> modelMapper.map(category, CategoryDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public Category getCategoryById(Integer id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Category with " + id + " not found"));
+    public CategoryDTO getCategoryById(Integer id) {
+        Category category = categoryRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Category with " + id + " not found"));
+
+        return modelMapper.map(category, CategoryDTO.class);
+
     }
 
-    public Category insertCategory(Category category) {
-        return categoryRepository.save(category);
+    public CategoryDTO insertCategory(Category category) {
+        Category savedCategory = categoryRepository.save(category);
+
+        return modelMapper.map(savedCategory, CategoryDTO.class);
     }
 
     public void deleteCategoryById(Integer id) {
         categoryRepository.deleteById(id);
     }
 
-    public Category updateCategoryById(Integer id, Category updatedCategory) {
+    public CategoryDTO updateCategoryById(Integer id, Category updatedCategory) {
 
         Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -51,29 +62,35 @@ public class CategoryService {
             existingCategory.setActivityStatus(updatedCategory.getActivityStatus());
         }
 
-        return categoryRepository.save(existingCategory);
+        Category savedCategory = categoryRepository.save(existingCategory);
+
+        return modelMapper.map(savedCategory, CategoryDTO.class);
     }
 
-    public Category deactivateCategoryById(Integer id) {
+    public CategoryDTO deactivateCategoryById(Integer id) {
 
-        Category category = categoryRepository.findById(id)
+        Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Category with "+ id + " not found!"));
 
-        category.setActivityStatus(false);
+        existingCategory.setActivityStatus(false);
 
-        return categoryRepository.save(category);
+        Category deactivatedCategory = categoryRepository.save(existingCategory);
+        System.out.println("Category with id: " + id + " deactivated");
+
+        return modelMapper.map(deactivatedCategory, CategoryDTO.class);
     }
 
-    public Category activateCategoryById(Integer id) {
+    public CategoryDTO activateCategoryById(Integer id) {
 
-        Category category = categoryRepository.findById(id)
+        Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Category with "+ id + " not found!"));
 
-        category.setActivityStatus(true);
+        Category activatedCategory = categoryRepository.save(existingCategory);
+        System.out.println("Category with id: " + id + " activated");
 
-        return categoryRepository.save(category);
+        return modelMapper.map(activatedCategory, CategoryDTO.class);
     }
 
 }
