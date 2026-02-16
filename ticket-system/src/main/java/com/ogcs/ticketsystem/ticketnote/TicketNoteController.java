@@ -1,6 +1,8 @@
 package com.ogcs.ticketsystem.ticketnote;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,18 +18,21 @@ public class TicketNoteController {
     }
 
     @GetMapping
-    public List<TicketNote> getTicketNotes(){
-        return ticketNoteService.getTicketNotes();
+    public ResponseEntity<List<TicketNoteDTO>> getTicketNotes(){
+        List<TicketNoteDTO> ticketNotes = ticketNoteService.getTicketNotes();
+        return new ResponseEntity<List<TicketNoteDTO>>(ticketNotes, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public TicketNote getTicketNoteById(@PathVariable Integer id){
-        return ticketNoteService.getTicketNoteById(id);
+    public ResponseEntity<TicketNoteDTO> getTicketNoteById(@PathVariable Integer id){
+        TicketNoteDTO ticketNoteDTO = ticketNoteService.getTicketNoteById(id);
+        return new ResponseEntity<TicketNoteDTO>(ticketNoteDTO, HttpStatus.OK);
     }
 
     @PostMapping
-    public TicketNote addTicketNote(@Valid @RequestBody TicketNote ticketNote, @RequestParam Integer employeeId, @RequestParam Integer ticketId){
-        return ticketNoteService.insertTicketNote(ticketNote, employeeId, ticketId);
+    public ResponseEntity<TicketNoteDTO> addTicketNote(@Valid @RequestBody TicketNote ticketNote, @RequestParam Integer employeeId, @RequestParam Integer ticketId){
+        TicketNoteDTO savedTicketNote = ticketNoteService.insertTicketNote(ticketNote, employeeId, ticketId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTicketNote);
     }
 
     @DeleteMapping("{id}")
@@ -36,8 +41,9 @@ public class TicketNoteController {
     }
 
     @PatchMapping("{id}")
-    public TicketNote updateTicketNoteById(@PathVariable Integer id, @Valid @RequestBody TicketNote ticketNote){
-        return ticketNoteService.updateTicketNoteById(id, ticketNote);
+    public ResponseEntity<TicketNoteDTO> updateTicketNoteById(@PathVariable Integer id, @Valid @RequestBody TicketNote ticketNote){
+        TicketNoteDTO savedTicketNote = ticketNoteService.updateTicketNoteById(id, ticketNote);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTicketNote);
     }
 
 }

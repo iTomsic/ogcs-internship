@@ -18,15 +18,12 @@ public class TicketNote {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
-    //private int ticket_id FK -> ticket
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    //private int employee_id FK -> employee
 
-
-
+    private String title;
     private String text;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

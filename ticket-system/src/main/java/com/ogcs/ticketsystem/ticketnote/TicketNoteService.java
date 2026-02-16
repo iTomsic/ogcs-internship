@@ -4,71 +4,84 @@ import com.ogcs.ticketsystem.employee.Employee;
 import com.ogcs.ticketsystem.employee.EmployeeRepository;
 import com.ogcs.ticketsystem.ticket.Ticket;
 import com.ogcs.ticketsystem.ticket.TicketRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketNoteService {
 
     private final TicketNoteRepository ticketNoteRepository;
-
     private final EmployeeRepository employeeRepository;
-
     private final TicketRepository ticketRepository;
+    private final ModelMapper modelMapper;
 
-    public TicketNoteService(TicketNoteRepository ticketNoteRepository, EmployeeRepository employeeRepository, TicketRepository ticketRepository) {
+    public TicketNoteService(TicketNoteRepository ticketNoteRepository, EmployeeRepository employeeRepository, TicketRepository ticketRepository, ModelMapper modelMapper, ModelMapper getModelMapper) {
         this.ticketNoteRepository = ticketNoteRepository;
         this.employeeRepository = employeeRepository;
         this.ticketRepository = ticketRepository;
+        this.modelMapper = getModelMapper;
     }
 
-    public List<TicketNote> getTicketNotes(){
-        return ticketNoteRepository.findAll();
+    public List<TicketNoteDTO> getTicketNotes(){
+        return ticketNoteRepository.findAll()
+                .stream()
+                .map(ticketNote -> modelMapper.map(ticketNote, TicketNoteDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public TicketNote getTicketNoteById(Integer id){
-        return ticketNoteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+    public TicketNoteDTO getTicketNoteById(Integer id){
+        TicketNote ticketNote = ticketNoteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "Ticket Note with " + id + " not found"));
+        return modelMapper.map(ticketNote, TicketNoteDTO.class);
     }
 
-    public TicketNote insertTicketNote(TicketNote ticketNote, Integer employeeId, Integer ticketId){
+    public TicketNoteDTO insertTicketNote(TicketNote ticketNote, Integer employeeId, Integer ticketId){
 
-        TicketNote newTicketNote = new TicketNote();
+        TicketNote savedTicketNote = new TicketNote();
 
-        newTicketNote.setText(ticketNote.getText());
+        savedTicketNote.setTitle(ticketNote.getTitle());
+        savedTicketNote.setText(ticketNote.getText());
 
         if (employeeId != null) {
             Employee employee = employeeRepository.findById(employeeId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee not found with id: " + employeeId));
-            newTicketNote.setEmployee(employee);
+            savedTicketNote.setEmployee(employee);
         }
-
         if (ticketId != null) {
             Ticket ticket = ticketRepository.findById(ticketId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Ticket not found with id: " + ticketId));
-            newTicketNote.setTicket(ticket);
+            savedTicketNote.setTicket(ticket);
         }
 
-        return ticketNoteRepository.save(newTicketNote);
+        ticketNoteRepository.save(savedTicketNote);
+        return modelMapper.map(savedTicketNote, TicketNoteDTO.class);
     }
 
     public void deleteTicketNoteById(Integer id){
         ticketNoteRepository.deleteById(id);
     }
 
-    public TicketNote updateTicketNoteById(Integer id, TicketNote updatedTicketNote){
+    public TicketNoteDTO updateTicketNoteById(Integer id, TicketNote updatedTicketNote){
 
         TicketNote existingTicketNote = ticketNoteRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "Ticket Note with "+ id + " not found!"));
 
+        if (updatedTicketNote.getTitle() != null) {
+            existingTicketNote.setText(updatedTicketNote.getTitle());
+        }
+
         if (updatedTicketNote.getText() != null) {
             existingTicketNote.setText(updatedTicketNote.getText());
         }
 
-        return ticketNoteRepository.save(existingTicketNote);
+        TicketNote savedTicketNote = ticketNoteRepository.save(existingTicketNote);
+
+        return modelMapper.map(savedTicketNote, TicketNoteDTO.class);
     }
 }
