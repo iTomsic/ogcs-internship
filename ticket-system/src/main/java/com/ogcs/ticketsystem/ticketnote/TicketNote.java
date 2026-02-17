@@ -21,7 +21,7 @@ public class TicketNote {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
-    private Employee employee;
+    private Employee notedBy;
 
     private String title;
     private String text;

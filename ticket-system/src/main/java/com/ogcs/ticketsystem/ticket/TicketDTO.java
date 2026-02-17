@@ -12,7 +12,6 @@ public class TicketDTO {
     private String title;
     private String customerDescription;
 
-    private Ticket.Priority priority;
     private Ticket.Status status;
 
     private CategoryDTO category;

@@ -50,7 +50,7 @@ public class TicketNoteService {
         if (employeeId != null) {
             Employee employee = employeeRepository.findById(employeeId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Employee not found with id: " + employeeId));
-            savedTicketNote.setEmployee(employee);
+            savedTicketNote.setNotedBy(employee);
         }
         if (ticketId != null) {
             Ticket ticket = ticketRepository.findById(ticketId)
