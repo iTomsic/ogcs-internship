@@ -1,9 +1,11 @@
 package com.ogcs.ticketsystem.ticketnote;
 
+import jakarta.persistence.*;
+
+import lombok.Data;
+
 import com.ogcs.ticketsystem.employee.Employee;
 import com.ogcs.ticketsystem.ticket.Ticket;
-import jakarta.persistence.*;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 

@@ -1,8 +1,9 @@
 package com.ogcs.ticketsystem.ticket;
 
-import com.ogcs.ticketsystem.employee.EmployeeDTO;
-import com.ogcs.ticketsystem.category.CategoryDTO;
 import lombok.*;
+
+import com.ogcs.ticketsystem.category.CategoryDTO;
+import com.ogcs.ticketsystem.employee.EmployeeDTO;
 
 @NoArgsConstructor
 @Getter

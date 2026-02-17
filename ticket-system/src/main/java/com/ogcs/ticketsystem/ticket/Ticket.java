@@ -1,12 +1,15 @@
 package com.ogcs.ticketsystem.ticket;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ogcs.ticketsystem.employee.Employee;
-import com.ogcs.ticketsystem.category.Category;
-import com.ogcs.ticketsystem.ticketnote.TicketNote;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
 import lombok.Data;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ogcs.ticketsystem.category.Category;
+import com.ogcs.ticketsystem.employee.Employee;
+import com.ogcs.ticketsystem.ticketnote.TicketNote;
+
 import java.time.LocalDateTime;
 
 
@@ -33,8 +36,6 @@ public class Ticket {
     }
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Priority is mandatory")  // CORRECT for enums
-    @Column(nullable = false)
     private Priority priority;
 
     public enum Status {
@@ -45,8 +46,6 @@ public class Ticket {
     }
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Status is mandatory")  // CORRECT for enums
-    @Column(nullable = false)
     private Status status;
 
     private String department;
@@ -69,6 +68,9 @@ public class Ticket {
     protected void onCreate() {
         createdAt = LocalDateTime.now().withNano(0);
         updatedAt = LocalDateTime.now().withNano(0);
+
+        setPriority(Priority.LOW);
+        setStatus(Status.PENDING);
     }
 
     @PreUpdate

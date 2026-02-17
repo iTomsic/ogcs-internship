@@ -1,13 +1,14 @@
 package com.ogcs.ticketsystem.ticket;
 
-import com.ogcs.ticketsystem.category.Category;
-import com.ogcs.ticketsystem.employee.Employee;
-import com.ogcs.ticketsystem.employee.EmployeeRepository;
-import com.ogcs.ticketsystem.category.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.ogcs.ticketsystem.category.Category;
+import com.ogcs.ticketsystem.category.CategoryRepository;
+import com.ogcs.ticketsystem.employee.Employee;
+import com.ogcs.ticketsystem.employee.EmployeeRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,10 +51,6 @@ public class TicketService {
         newTicket.setCustomerName(ticket.getCustomerName());
         newTicket.setCustomerEmail(ticket.getCustomerEmail());
         newTicket.setCustomerDescription(ticket.getCustomerDescription());
-
-        newTicket.setPriority(Ticket.Priority.LOW);
-        newTicket.setStatus(Ticket.Status.PENDING);
-
         newTicket.setDepartment(ticket.getDepartment());
 
         Category category = categoryRepository.findByIdAndActivityStatusTrue(categoryId)

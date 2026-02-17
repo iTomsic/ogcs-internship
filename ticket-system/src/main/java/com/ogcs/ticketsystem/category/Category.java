@@ -1,15 +1,16 @@
 package com.ogcs.ticketsystem.category;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ogcs.ticketsystem.ticket.Ticket;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
 import lombok.Data;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ogcs.ticketsystem.ticket.Ticket;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Data
