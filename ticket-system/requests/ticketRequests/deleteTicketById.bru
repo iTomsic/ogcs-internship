@@ -1,0 +1,16 @@
+meta {
+  name: deleteTicketById
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:8080/api/tickets/1
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

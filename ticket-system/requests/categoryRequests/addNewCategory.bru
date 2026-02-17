@@ -1,0 +1,24 @@
+meta {
+  name: addNewCategory
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/api/categories
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Software",
+    "description": "Software related issues",
+    "activityStatus": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

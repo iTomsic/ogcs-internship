@@ -1,0 +1,20 @@
+meta {
+  name: reassignTicketToEmployee
+  type: http
+  seq: 9
+}
+
+patch {
+  url: http://localhost:8080/api/tickets/1/reassign?assignedEmployeeId=2
+  body: none
+  auth: inherit
+}
+
+params:query {
+  assignedEmployeeId: 2
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

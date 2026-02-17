@@ -1,0 +1,21 @@
+meta {
+  name: updateTicketStatusById
+  type: http
+  seq: 8
+}
+
+patch {
+  url: http://localhost:8080/api/tickets/1/status?assignedEmployeeId=1&newStatus=ACCEPTED
+  body: none
+  auth: inherit
+}
+
+params:query {
+  assignedEmployeeId: 1
+  newStatus: ACCEPTED
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

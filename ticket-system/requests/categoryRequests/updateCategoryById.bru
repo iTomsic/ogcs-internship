@@ -1,0 +1,24 @@
+meta {
+  name: updateCategoryById
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/api/categories/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "description": "All software related issues",
+    "activityStatus": false
+  
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,15 @@
+meta {
+  name: getTicketNoteById
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8080/api/ticket-notes/1
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
